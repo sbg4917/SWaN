@@ -6,7 +6,8 @@
 # required datasets: SWaN STM logger files & plot key, Prospect Hill soil moisture files & plot key
 ############################################################################################################
 
-setwd("/Users/f00502n/Documents/Dartmouth/Fibox_Processing/Harvard Forest/STM")
+#setwd("/Users/f00502n/Documents/Dartmouth/Fibox_Processing/Harvard Forest/STM")
+setwd("/Users/f0046hz/Documents/GitHub/SWaN/STM")
 
 library(dplyr)
 library(tidyr)
@@ -78,36 +79,36 @@ merged.avg <- merge(ph.stm.avg, swan.stm.avg, by.x = c("date", "Treatment"), by.
 #plot HP lab STM data vs HF data
 ggplot() +  
   geom_line(data = ph.stm.avg, aes(x = date, y = value, color = "red")) +
-  geom_point(data = swan.stm.avg, aes(x = Date, y = percent.moisture, color = "blue"))+
-  geom_line(data = swan.stm.avg, aes(x = Date, y = percent.moisture, color = "blue")) +
+  geom_point(data = swan.stm.avg.by.box, aes(x = Date, y = percent.moisture, color = "blue"))+
+  geom_line(data = swan.stm.avg.by.box, aes(x = Date, y = percent.moisture, color = "blue")) +
   facet_grid(vars(Depth), vars(Treatment)) +
-  scale_colour_discrete(labels=c("HP lab STM sensor", "Prospect Hill STM sensor"))
+  scale_colour_discrete(labels=c("SWaN STM sensor", "Prospect Hill STM sensor"))
 
 #check stm between depths 
 ggplot() +  
-  geom_point(data = swan.stm.avg, aes(x = Date, y = percent.moisture, group = Depth, color = factor(Depth)))+
-  geom_line(data = swan.stm.avg, aes(x = Date, y = percent.moisture, group = Depth, color = factor(Depth))) +
+  geom_point(data = swan.stm.avg.by.box, aes(x = Date, y = percent.moisture, group = Depth, color = factor(Depth)))+
+  geom_line(data = swan.stm.avg.by.box, aes(x = Date, y = percent.moisture, group = Depth, color = factor(Depth))) +
   facet_grid(vars(Treatment)) +
   scale_colour_discrete(labels=c("10 cm", "30 cm")) 
 
 
 ggplot() +  
-  geom_point(data = swan.stm.avg, aes(x = Date, y = percent.moisture, group = Treatment, color = factor(Treatment)))+
-  geom_line(data = swan.stm.avg, aes(x = Date, y = percent.moisture, group = Treatment, color = factor(Treatment))) +
+  geom_point(data = swan.stm.avg.by.box, aes(x = Date, y = percent.moisture, group = Treatment, color = factor(Treatment)))+
+  geom_line(data = swan.stm.avg.by.box, aes(x = Date, y = percent.moisture, group = Treatment, color = factor(Treatment))) +
   facet_grid(vars(Depth)) +
   scale_colour_discrete(labels=c("Control", "Heated")) 
 
 #just to check that the heated/control and depth temps make sense
 ggplot() +  
-  geom_point(data = swan.stm.avg, aes(x = Date, y = Temp, group = Depth, color = factor(Depth)))+
-  geom_line(data = swan.stm.avg, aes(x = Date, y = Temp, group = Depth, color = factor(Depth))) +
+  geom_point(data = swan.stm.avg.by.box, aes(x = Date, y = Temp, group = Depth, color = factor(Depth)))+
+  geom_line(data = swan.stm.avg.by.box, aes(x = Date, y = Temp, group = Depth, color = factor(Depth))) +
   facet_grid(vars(Treatment)) +
   scale_colour_discrete(labels=c("10 cm", "30 cm")) 
 
 
 ggplot() +  
-  geom_point(data = swan.stm.avg, aes(x = Date, y = Temp, group = Treatment, color = factor(Treatment)))+
-  geom_line(data = swan.stm.avg, aes(x = Date, y = Temp, group = Treatment, color = factor(Treatment))) +
+  geom_point(data = swan.stm.avg.by.box, aes(x = Date, y = Temp, group = Treatment, color = factor(Treatment)))+
+  geom_line(data = swan.stm.avg.by.box, aes(x = Date, y = Temp, group = Treatment, color = factor(Treatment))) +
   facet_grid(vars(Depth)) +
   scale_colour_discrete(labels=c("Control", "Heated")) 
 
@@ -158,5 +159,5 @@ predictions <- rbind(predictions, predict.values("Control"))
 merged.avg$percent.moisture[21] <- predictions$percent.moisture[2]
 merged.avg$percent.moisture[22] <- predictions$percent.moisture[1]
 
-
+write.csv(merged.avg, "Merged SWaN PH STM.csv")
 

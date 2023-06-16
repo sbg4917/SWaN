@@ -20,8 +20,8 @@ SWAN2 <- read.csv("compiled data 20181009 through 20210308/SWaN2_compiled_data_2
 sensorkey <- read.csv("compiled data 20181009 through 20210308/SWaNLoggerSensorKey.csv")
 
 #read data from Harvard Forest (Prospect Hill) STM sensors
-ph.stm <- read.csv("HF STM/hf005-07-soil-moisture.csv") # data from 2015-2019
-ph.stm.2020 <- read.csv("HF STM/PH_moisture_daily_averages_2020.csv")
+ph.stm <- read.csv("HF STM/hf005-07-soil-moisture.csv") # data from 2015-2023
+ph.temp <- read.csv("HF STM/hf005-04-soil-temp.csv") # data from 2015-2023
 ph.sensor.key <- read.csv("HF STM/HF STM key.csv")
 
 
@@ -50,6 +50,8 @@ swan.stm.avg <- swan.stm %>%
 swan.stm.avg.by.box <- swan.stm %>%
   group_by(Date, Depth, Treatment, Box) %>%
   summarize_at(vars(percent.moisture,Temp), list(~mean(., na.rm = TRUE)))
+
+
 
 #### Prospect Hill file manipulation ####
 #calculate date from day of year for 2020 data
